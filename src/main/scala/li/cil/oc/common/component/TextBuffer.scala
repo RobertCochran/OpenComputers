@@ -381,15 +381,10 @@ class TextBuffer(val host: EnvironmentHost) extends AbstractManagedEnvironment w
   override def renderText(stack: PoseStack): Boolean = relativeLitArea != 0 && proxy.render(stack)
 
   @OnlyIn(Dist.CLIENT)
-  def renderText(stack: PoseStack, renderBuffer: MultiBufferSource): Boolean =
-  {
-    import li.cil.oc.OpenComputers
-    OpenComputers.log.debug("renderText: " + proxy)
-    relativeLitArea != 0 && (proxy match {
-      case client: TextBuffer.ClientProxy => client.render(stack, renderBuffer)
-      case _ => proxy.render(stack)
-    })
-  }
+  def renderText(stack: PoseStack, renderBuffer: MultiBufferSource): Boolean = relativeLitArea != 0 && (proxy match {
+    case client: TextBuffer.ClientProxy => client.render(stack, renderBuffer)
+    case _ => proxy.render(stack)
+  })
 
   @OnlyIn(Dist.CLIENT)
   override def renderWidth: Int = TextBufferRenderCache.renderer.charRenderWidth * getViewportWidth
